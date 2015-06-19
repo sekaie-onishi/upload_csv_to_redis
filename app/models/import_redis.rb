@@ -12,9 +12,8 @@ class ImportRedis
     @redis = Redis.new(:host => "#{Settings.redis_setting.host}", :port => Settings.redis_setting.port)
     CSV.foreach(file.path, {headers: true, quote_char: "'"}) do |row|
       key = "#{Settings.redis_setting.host_prefix}#{Settings.redis_common.key_separator}#{Settings.redis_common.data_type_key}#{Settings.redis_common.key_separator}#{row['theme']}#{row['controller']}#{row['action']}"
-      value = create_value(row)
+      value = JSON.generate(create_value(row))
       @redis.set(key, value);
-      #@text += "#{key}: #{JSON.generate(value)}"
     end
     return @text
   end
