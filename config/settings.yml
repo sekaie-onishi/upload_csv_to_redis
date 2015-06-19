@@ -1,0 +1,3 @@
+redis_common:
+  data_type_key: 'WebXml'
+  key_separator: ':'
