@@ -21,7 +21,7 @@ class ImportRedis
   def create_value(row)
     value = Hash.new()
     @redis_value_keys.each{|key|
-      value[key] = row[key]
+      value[key] = row[key].encode('UTF-8')
     }
     return value
   end
