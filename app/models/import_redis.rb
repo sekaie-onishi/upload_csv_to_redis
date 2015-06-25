@@ -10,7 +10,7 @@ class ImportRedis
   def import(file)
     @text = "keys:"
     @redis = Redis.new(:host => "#{Settings.redis_setting.host}", :port => Settings.redis_setting.port)
-    CSV.foreach(file.path, {headers: true, quote_char: "'"}) do |row|
+    CSV.foreach(file.path, {headers: true, encoding: "Shift_JIS:UTF-8"}) do |row|
       key = "#{Settings.redis_setting.host_prefix}#{Settings.redis_common.key_separator}#{Settings.redis_common.data_type_key}#{Settings.redis_common.key_separator}#{row['theme']}#{row['controller']}#{row['action']}"
       value = JSON.generate(create_value(row))
       @redis.set(key, value);
@@ -21,7 +21,7 @@ class ImportRedis
   def create_value(row)
     value = Hash.new()
     @redis_value_keys.each{|key|
-      value[key] = row[key].encode('UTF-8')
+      value[key] = row[key]
     }
     return value
   end
